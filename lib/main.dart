@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
+import 'package:ungunseen/providers/demp_provider.dart';
 import 'package:ungunseen/states/add_post.dart';
 import 'package:ungunseen/states/authen.dart';
-import 'package:ungunseen/states/demo_provider.dart';
+import 'package:ungunseen/states/form_add_provider.dart';
+import 'package:ungunseen/states/home_demo_provider.dart';
 import 'package:ungunseen/states/my_service.dart';
 import 'package:ungunseen/utility/my_constant.dart';
 
@@ -10,7 +12,8 @@ final Map<String, WidgetBuilder> map = {
   '/authen': (BuildContext context) => Authen(),
   '/myService': (BuildContext context) => MyService(),
   '/addPost': (BuildContext context) => AddPost(),
-  '/demoProvider':(BuildContext context)=>DemoProdiver(),
+  '/demoProvider': (BuildContext context) => HomeDemoProvider(),
+  '/formAddProdiver':(BuildContext context)=>FormAddProvider(),
 };
 
 String initialRout;
@@ -36,11 +39,20 @@ main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: MyConstant.appName,
-      routes: map,
-      initialRoute: initialRout,
-      // home: MyService(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) {
+            return DemoProdiver();
+          },
+        )
+      ],
+      child: MaterialApp(
+        title: MyConstant.appName,
+        routes: map,
+        initialRoute: initialRout,
+        // home: MyService(),
+      ),
     );
   }
 }
